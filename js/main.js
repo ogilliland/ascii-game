@@ -9,6 +9,9 @@ var DEPTH = 8;
 var CANVAS_WIDTH;
 var CANVAS_HEIGHT;
 
+var COLORS = ["#0d2b45", "#203c56", "#544e68", "#8d697a", "#d08159", "#ffaa5e", "#ffd4a3", "#ffecd6"];
+/* var ON_COLORS = ["#ffecd6", "#ffecd6", "#ffecd6", "#ffecd6", "#0d2b45", "#0d2b45"]; */
+
 var map = new Uint8Array(WIDTH*DEPTH*HEIGHT);
 
 window.onload = function() {
@@ -36,12 +39,11 @@ function resize() {
 }
 
 function render() {
-	var colors = ["#FFFFFF", "#000000"];
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 	for(var y = 0; y <= CANVAS_HEIGHT; y++) {
 		for(var x = 0; x <= CANVAS_WIDTH; x++) {
-			ctx.fillStyle = colors[Math.floor(Math.random()*2)];
+			ctx.fillStyle = COLORS[Math.floor(Math.random()*8)];
 			ctx.fillRect(x*VOXEL_SIZE, y*VOXEL_SIZE, VOXEL_SIZE, VOXEL_SIZE);
 		}
 	}
