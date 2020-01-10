@@ -26,7 +26,8 @@ function init() {
 	terrain = new Terrain(WIDTH, HEIGHT, DEPTH, SCALE);
 
 	camera = new Camera();
-	camera.setPos(WIDTH/2, HEIGHT/2, DEPTH + 64);
+	camera.setPos(WIDTH/2, HEIGHT, DEPTH + 64);
+	camera.lookAt(WIDTH/2, HEIGHT/2, 0);
 
 	resize();
 	render();

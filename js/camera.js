@@ -3,30 +3,51 @@ function Camera() {
 	this.aov = 40 * Math.PI / 180; // horizontal angle of view in radians
 	this.thresholdMin = 2;
 	this.thresholdMax = 512;
-
-	this.x = 0;
-	this.y = 0;
-	this.z = 0;
+	this.position = new Vector();
+	this.direction = new Vector();
+	this.right = new Vector();
+	this.up = new Vector();
 
 	this.setPos = function(x, y, z) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
+		this.position.x = x;
+		this.position.y = y;
+		this.position.z = z;
+	}
+
+	this.lookAt = function(x, y, z) {
+		this.direction = new Vector(x, y, z).subtract(this.position).unit();
+		this.right = new Vector(0, 0, 1).cross(this.direction).unit();
+		this.up = this.right.cross(this.direction);
 	}
 
 	this.render = function(ctx) {
 		for(var y = 0; y <= this.height; y++) {
 			for(var x = 0; x <= this.width; x++) {
 
-				var x1 = this.x;
-				var y1 = this.y;
-				var z1 = this.z;
+				var direction = this.direction;
+				direction = direction.add(this.right.multiply(Math.tan((x/this.width)*this.aov - this.aov/2)));
+				direction = direction.add(this.up.multiply(Math.tan((y/this.height)*this.aov*this.aspect - this.aov*this.aspect/2)));
+				direction = direction.unit();
+
+				var start = this.position.add(direction.multiply(this.thresholdMin));
+				var end = this.position.add(direction.multiply(this.thresholdMax));
+
+				var x1 = this.position.x;
+				var y1 = this.position.y;
+				var z1 = this.position.z;
 
 				var x2 = this.thresholdMax * Math.tan((x/this.width)*this.aov - this.aov/2);
 				var y2 = this.thresholdMax * Math.tan((y/this.height)*this.aov*this.aspect - this.aov*this.aspect/2);
 				var z2 = this.thresholdMax * -1;
 
-				var target = ray(x1, y1, z1, x2, y2, z2);
+				var target = ray(
+					Math.round(start.x),
+					Math.round(start.y), 
+					Math.round(start.z), 
+					Math.round(end.x), 
+					Math.round(end.y), 
+					Math.round(end.z)
+				);
 
 				ctx.fillStyle = COLORS[target];
 				ctx.fillRect(x*VOXEL_SIZE, y*VOXEL_SIZE, VOXEL_SIZE, VOXEL_SIZE);
@@ -118,4 +139,6 @@ function ray(x1, y1, z1, x2, y2, z2) {
 			z += z_inc;
 		}
 	}
+
+	return 0;
 }
