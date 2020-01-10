@@ -1,12 +1,12 @@
-var canvas, ctx, map, noise;
+var canvas, ctx, terrain;
 
 var VOXEL_SIZE = 8; // px
 
-var WIDTH = 256;
-var HEIGHT = 256;
-var DEPTH = 256;
+var WIDTH = 64;
+var HEIGHT = 64;
+var DEPTH = 64;
 
-var SCALE = 64;
+var SCALE = 32;
 
 var CANVAS_WIDTH;
 var CANVAS_HEIGHT;
@@ -26,27 +26,7 @@ function init() {
 	canvas = document.getElementById("canvas");
 	ctx = canvas.getContext("2d");
 
-	map = new Uint8Array(WIDTH*DEPTH*HEIGHT);
-	noise = new SimplexNoise("seed");
-
-	for(var y = 0; y < HEIGHT; y++) {
-		for(var x = 0; x < WIDTH; x++) {
-			for(var z = 0; z < DEPTH; z++) {
-				var delta = Math.max(0, noise.noise2D(x/SCALE, y/SCALE) - z/DEPTH);
-				var blocks = Math.round(delta*DEPTH);
-				if(blocks > 3) {
-					var fill = 7;
-				} else if (blocks > 1) {
-					var fill = 5;
-				} else if (blocks == 1) {
-					var fill = 3;
-				} else {
-					var fill = 0;
-				}
-				map[x + y*WIDTH + z*WIDTH*HEIGHT] = fill;
-			}
-		}
-	}
+	terrain = new Terrain(WIDTH, HEIGHT, DEPTH, SCALE);
 
 	resize();
 	render();
@@ -65,7 +45,7 @@ function render() {
 
 	for(var y = 0; y <= CANVAS_HEIGHT; y++) {
 		for(var x = 0; x <= CANVAS_WIDTH; x++) {
-			ctx.fillStyle = COLORS[map[x + y*WIDTH + (DEPTH/2)*WIDTH*HEIGHT]];
+			ctx.fillStyle = COLORS[terrain.get(x, y, DEPTH/2)];
 			ctx.fillRect(x*VOXEL_SIZE, y*VOXEL_SIZE, VOXEL_SIZE, VOXEL_SIZE);
 		}
 	}
