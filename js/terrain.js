@@ -18,7 +18,7 @@ function Terrain(width, height, depth, scale) {
             return this.map[x + y*this.width + z*this.width*this.height];
         } else {
             // ERROR - out of range
-            return 0;
+            return null;
         }
     }
 
@@ -30,11 +30,11 @@ function Terrain(width, height, depth, scale) {
                     var delta = Math.max(0, this.noise.noise2D(x/this.scale, y/this.scale) - z/this.depth);
                     var above = Math.round(delta*this.depth);
                     if(above > 3) {
-                        var voxel = 7;
+                        var voxel = 3;
                     } else if (above > 1) {
                         var voxel = 5;
                     } else if (above == 1) {
-                        var voxel = 3;
+                        var voxel = 7;
                     } else {
                         var voxel = 0;
                     }
