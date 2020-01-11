@@ -1,4 +1,5 @@
 var scene, camera, font, player;
+
 var playerControls = {
 	"up": false,
 	"down": false,

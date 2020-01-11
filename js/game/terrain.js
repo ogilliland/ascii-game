@@ -3,23 +3,25 @@ function Terrain(width, height, depth, scale) {
     this.height = height;
     this.depth = depth;
     this.scale = scale;
+    this.lightDir = new Vector(1, 1, 0).unit();
     this.position = new Vector();
     // bits 0 - 3  : color
     // bits 4 - 7  : bgColor
     // bits 8 - 15 : glyph
     this.map = new Uint16Array(width*height*depth);
+    var self = this;
 
     this.set = function(vector, voxel) {
-        if(vector.x >= 0 && vector.x < this.width && vector.y >= 0 && vector.y < this.height && vector.z >= 0 && vector.z < this.depth) {
-            this.map[vector.x + vector.y*this.width + vector.z*this.width*this.height] = voxel;
+        if(vector.x >= 0 && vector.x < self.width && vector.y >= 0 && vector.y < self.height && vector.z >= 0 && vector.z < self.depth) {
+            self.map[vector.x + vector.y*self.width + vector.z*self.width*self.height] = voxel;
         } else {
             // ERROR - out of range
         }
     }
 
-    this.get = function(vector) {
-        if(vector.x >= 0 && vector.x < this.width && vector.y >= 0 && vector.y < this.height && vector.z >= 0 && vector.z < this.depth) {
-            return this.map[vector.x + vector.y*this.width + vector.z*this.width*this.height];
+    self.get = function(vector) {
+        if(vector.x >= 0 && vector.x < self.width && vector.y >= 0 && vector.y < self.height && vector.z >= 0 && vector.z < self.depth) {
+            return self.map[vector.x + vector.y*self.width + vector.z*self.width*self.height];
         } else {
             // ERROR - out of range
             return null;
@@ -27,13 +29,13 @@ function Terrain(width, height, depth, scale) {
     }
 
     // convert world coordinates to local coordinates
-    this.toLocal = function(vector) {
-        return vector.subtract(this.position);
+    self.toLocal = function(vector) {
+        return vector.subtract(self.position);
     }
 
     // check if voxel exists at these coordinates
-    this.isSolid = function(vector) {
-        return this.get(vector) > 0;
+    self.isSolid = function(vector) {
+        return self.get(vector) > 0;
     }
 
     this.noise = new SimplexNoise("seed");
@@ -44,6 +46,9 @@ function Terrain(width, height, depth, scale) {
                 // delta is the amount of terrain above the current voxel
                 var delta = Math.max(0, 0.5*(this.noise.noise2D(x/this.scale, y/this.scale) + 1) - z/this.depth);
                 var above = Math.round(delta*this.depth);
+                var gradientX = new Vector(1, 0, this.depth*(this.noise.noise2D((x+0.5)/this.scale, (y-0.5)/this.scale) - this.noise.noise2D((x-0.5)/this.scale, (y-0.5)/this.scale)));
+                var gradientY = new Vector(0, 1, this.depth*(this.noise.noise2D((x-0.5)/this.scale, (y-0.5)/this.scale) - this.noise.noise2D((x-0.5)/this.scale, (y+0.5)/this.scale)));
+                var faceNormal = gradientX.cross(gradientY).unit();
                 // defaults
                 var color = 0;
                 var bgColor = 0;
@@ -73,10 +78,23 @@ function Terrain(width, height, depth, scale) {
                 } else if(above > 0) {
                     // grass
                     color = 15;
+                    var lightIntensity = faceNormal.dot(this.lightDir);
+                    if(lightIntensity < 0) {
+                        color = 5;
+                    }
                     bgColor = 14;
-                    var rand = Math.random();
-                    if(rand < 0.5) {
-                        glyph = 142;
+                    glyph = 0;
+                    if (Math.abs(lightIntensity) > 0.5) {
+                        glyph = 30;
+                        if(lightIntensity < 0) glyph = 31;
+                    } else if (Math.abs(lightIntensity) > 0.25) {
+                        glyph = 43;
+                    } else if (Math.abs(lightIntensity) > 0.1) {
+                        glyph = 37;
+                    } else if(Math.abs(lightIntensity) > 0.05) {
+                        glyph = 44;
+                    } else if(Math.abs(lightIntensity) > 0.025) {
+                        glyph = 46;
                     }
                 }
                 var voxel = color << 12 | bgColor << 8 | glyph;
