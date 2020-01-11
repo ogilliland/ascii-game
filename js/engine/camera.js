@@ -68,10 +68,6 @@ function OrthographicCamera() {
 				offset = offset.add(self.up.multiply(y - self.height/2));
 
 				var start = self.position.add(offset);
-				start = start.add(self.direction.multiply(self.thresholdMin));
-				var end = self.position.add(offset);
-				end = end.add(self.direction.multiply(self.thresholdMax));
-
 				var target = raycast(start, self.direction, self.thresholdMax, scene.voxelTest);
 
 				var color = (target & (15 << 12)) >>> 12;
