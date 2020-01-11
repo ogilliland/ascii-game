@@ -3,7 +3,9 @@ var playerControls = {
 	"up": false,
 	"down": false,
 	"left": false,
-	"right": false
+	"right": false,
+	"rotateLeft": false,
+	"rotateRight": false
 };
 
 var times = [];
@@ -50,6 +52,7 @@ function animate() {
 	// move player
 	var up = 0;
 	var right = 0;
+	var rotate = 0;
 
 	if(playerControls.up) {
 		up++;
@@ -63,12 +66,21 @@ function animate() {
 	if(playerControls.right) {
 		right--;
 	}
+	if(playerControls.rotateLeft) {
+		rotate++;
+	}
+	if(playerControls.rotateRight) {
+		rotate--;
+	}
 
 	if(up != 0) {
 		player.move(camera.direction.multiply(up*4));
 	}
 	if(right != 0) {
 		player.move(camera.right.multiply(-right*4));
+	}
+	if(rotate != 0) {
+		camera.phi += rotate*Math.PI/32;
 	}
 
 	scene.update();
@@ -99,15 +111,16 @@ document.onkeydown = function(e) {
     
     if (e.keyCode == "38" || e.keyCode == "87") {
         playerControls.up = true;
-    }
-    else if (e.keyCode == "40" || e.keyCode == "83") {
+    } else if (e.keyCode == "40" || e.keyCode == "83") {
         playerControls.down = true;
-    }
-    else if (e.keyCode == "37" || e.keyCode == "65") {
+    } else if (e.keyCode == "37" || e.keyCode == "65") {
        playerControls.left = true;
-    }
-    else if (e.keyCode == "39" || e.keyCode == "68") {
+    } else if (e.keyCode == "39" || e.keyCode == "68") {
        playerControls.right = true;
+    } else if (e.keyCode == "81") {
+       playerControls.rotateLeft = true;
+    } else if (e.keyCode == "69") {
+       playerControls.rotateRight = true;
     }
 }
 
@@ -116,14 +129,15 @@ document.onkeyup = function(e) {
     
     if (e.keyCode == "38" || e.keyCode == "87") {
         playerControls.up = false;
-    }
-    else if (e.keyCode == "40" || e.keyCode == "83") {
+    } else if (e.keyCode == "40" || e.keyCode == "83") {
         playerControls.down = false;
-    }
-    else if (e.keyCode == "37" || e.keyCode == "65") {
+    } else if (e.keyCode == "37" || e.keyCode == "65") {
        playerControls.left = false;
-    }
-    else if (e.keyCode == "39" || e.keyCode == "68") {
+    } else if (e.keyCode == "39" || e.keyCode == "68") {
        playerControls.right = false;
+	} else if (e.keyCode == "81") {
+       playerControls.rotateLeft = false;
+    } else if (e.keyCode == "69") {
+       playerControls.rotateRight = false;
     }
 }
