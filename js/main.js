@@ -73,11 +73,12 @@ function animate() {
 		rotate--;
 	}
 
+	// TO DO - fix variable speed due to player position rounding
 	if(up != 0) {
-		player.move(camera.direction.multiply(up*4));
+		player.move(camera.direction.multiply(up*2));
 	}
 	if(right != 0) {
-		player.move(camera.right.multiply(-right*4));
+		player.move(camera.right.multiply(-right*2));
 	}
 	if(rotate != 0) {
 		camera.phi += rotate*Math.PI/32;
