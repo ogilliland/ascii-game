@@ -16,4 +16,12 @@ function Scene(width, height, depth) {
             }
         }
     }
+
+    this.update = function() {
+        for(var i = 0; i < self.children.length; i++) {
+            if (typeof self.children[i].update === "function") { 
+                self.children[i].update();
+            }
+        }
+    }
 }

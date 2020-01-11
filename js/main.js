@@ -1,4 +1,10 @@
 var scene, camera, font, player;
+var playerControls = {
+	"up": false,
+	"down": false,
+	"left": false,
+	"right": false
+};
 
 var times = [];
 
@@ -24,7 +30,9 @@ function init() {
 	var terrain = new Terrain(scene.width, scene.height, scene.depth, 128);
 	scene.addChild(terrain);
 
-	var player = new Character();
+	player = new Character();
+	player.position.x = 10;
+	player.position.y = 10;
 	scene.addChild(player);
 
 	camera = new OrthographicCamera();
@@ -33,10 +41,10 @@ function init() {
 	camera.lookAt(0, 0, 0);
 
 	camera.resize();
-	render();
+	animate();
 }
 
-function render() {
+function animate() {
 	camera.refresh();
 	camera.render();
 
@@ -46,8 +54,34 @@ function render() {
 	camera.position.y = camera.position.x*Math.sin(angle) + camera.position.y*Math.cos(angle);
 	camera.lookAt(0, 0, 0);
 
+	// move player
+	var up = 0;
+	var right = 0;
+
+	if(playerControls.up) {
+		up++;
+	}
+	if(playerControls.down) {
+		up--;
+	}
+	if(playerControls.left) {
+		right++;
+	}
+	if(playerControls.right) {
+		right--;
+	}
+
+	if(up != 0) {
+		player.move(camera.direction.multiply(up));
+	}
+	if(right != 0) {
+		player.move(camera.right.multiply(-right));
+	}
+
+	scene.update();
+
 	calculateFps();
-	requestAnimationFrame(render);
+	requestAnimationFrame(animate);
 }
 
 function randbetween(min, max) {
@@ -62,4 +96,38 @@ function calculateFps() {
     times.push(now);
     var fps = times.length;
  	// console.log("fps: "+fps);
+}
+
+document.onkeydown = function(e) {
+    e = e || window.event;
+    
+    if (e.keyCode == "38" || e.keyCode == "87") {
+        playerControls.up = true;
+    }
+    else if (e.keyCode == "40" || e.keyCode == "83") {
+        playerControls.down = true;
+    }
+    else if (e.keyCode == "37" || e.keyCode == "65") {
+       playerControls.left = true;
+    }
+    else if (e.keyCode == "39" || e.keyCode == "68") {
+       playerControls.right = true;
+    }
+}
+
+document.onkeyup = function(e) {
+    e = e || window.event;
+    
+    if (e.keyCode == "38" || e.keyCode == "87") {
+        playerControls.up = false;
+    }
+    else if (e.keyCode == "40" || e.keyCode == "83") {
+        playerControls.down = false;
+    }
+    else if (e.keyCode == "37" || e.keyCode == "65") {
+       playerControls.left = false;
+    }
+    else if (e.keyCode == "39" || e.keyCode == "68") {
+       playerControls.right = false;
+    }
 }
