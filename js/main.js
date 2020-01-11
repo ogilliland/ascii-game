@@ -6,7 +6,12 @@ var playerControls = {
 	"left": false,
 	"right": false,
 	"rotateLeft": false,
-	"rotateRight": false
+	"rotateRight": false,
+	"mouse": {
+		"x": 0,
+		"y": 0,
+		"dragging": false
+	}
 };
 
 var times = [];
@@ -142,4 +147,25 @@ document.onkeyup = function(e) {
     } else if (e.keyCode == "69") {
        playerControls.rotateRight = false;
     }
+}
+
+document.onmousedown = function(e) {
+	playerControls.mouse.dragging = true;
+	playerControls.mouse.x = e.screenX;
+	playerControls.mouse.y = e.screenY;
+}
+
+document.onmouseup = function(e) {
+	playerControls.mouse.dragging = false;
+}
+
+document.onmousemove = function(e) {
+	if(playerControls.mouse.dragging) {
+		var dx = e.screenX - playerControls.mouse.x;
+		var dy = e.screenY - playerControls.mouse.y;
+		camera.phi += dx*Math.PI/400;
+		camera.theta += dy*Math.PI/400;
+		playerControls.mouse.x = e.screenX;
+		playerControls.mouse.y = e.screenY;
+	}
 }
