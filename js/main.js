@@ -1,4 +1,4 @@
-var scene, camera, font;
+var scene, camera, font, player;
 
 var times = [];
 
@@ -19,13 +19,13 @@ function init() {
 
 	font = new Font();
 
-	scene = new Scene(256, 256, 64);
+	scene = new Scene(256, 256, 32);
 
 	var terrain = new Terrain(scene.width, scene.height, scene.depth, 128);
-	/* terrain.position.x = -1 * WIDTH/2;
-	terrain.position.y = -1 * HEIGHT/2; */
-
 	scene.addChild(terrain);
+
+	var player = new Character();
+	scene.addChild(player);
 
 	camera = new OrthographicCamera();
 	camera.setContext(ctx);
