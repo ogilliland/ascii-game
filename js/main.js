@@ -5,8 +5,8 @@ var times = [];
 // TO DO - remove this and get from texture map instead
 var VOXEL_SIZE = 12; // px
 
-var WIDTH = 256;
-var HEIGHT = 256;
+var WIDTH = 64;
+var HEIGHT = 64;
 var DEPTH = 32;
 
 var SCALE = 128;

@@ -95,7 +95,10 @@ function OrthographicCamera() {
 					Math.round(end.z)
 				);
 
-				texture.drawGlyph(ctx, x*VOXEL_SIZE, y*VOXEL_SIZE, 15, target, 42);
+				var color = (target & (15 << 12)) >>> 12;
+				var bgColor = (target & (15 << 8)) >>> 8;
+				var glyph = target & 255;
+				texture.drawGlyph(ctx, x*VOXEL_SIZE, y*VOXEL_SIZE, color, bgColor, glyph);
 				// ctx.fillStyle = COLORS[target];
 				// ctx.fillRect(x*VOXEL_SIZE, y*VOXEL_SIZE, VOXEL_SIZE, VOXEL_SIZE);
 			}
