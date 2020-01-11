@@ -34,14 +34,7 @@ function OrthographicCamera() {
 				var end = self.position.add(offset);
 				end = end.add(self.direction.multiply(self.thresholdMax));
 
-				var target = raycast(
-					Math.round(start.x),
-					Math.round(start.y), 
-					Math.round(start.z), 
-					Math.round(end.x), 
-					Math.round(end.y), 
-					Math.round(end.z)
-				);
+				var target = raycast(start, self.direction, self.thresholdMax, voxelTest);
 
 				var color = (target & (15 << 12)) >>> 12;
 				var bgColor = (target & (15 << 8)) >>> 8;
