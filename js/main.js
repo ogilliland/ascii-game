@@ -39,8 +39,8 @@ function init() {
 	scene.addChild(terrain);
 
 	player = new Character();
-	player.position.x = 10;
-	player.position.y = 10;
+	player.position.x = scene.width/2;
+	player.position.y = scene.height/2;
 	scene.addChild(player);
 
 	camera = new OrthographicCamera();
