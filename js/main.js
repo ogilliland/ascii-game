@@ -2,9 +2,9 @@ var canvas, ctx, terrain, camera;
 
 var VOXEL_SIZE = 8; // px
 
-var WIDTH = 64;
-var HEIGHT = 64;
-var DEPTH = 64;
+var WIDTH = 128;
+var HEIGHT = 128;
+var DEPTH = 32;
 
 var SCALE = 32;
 
@@ -25,9 +25,13 @@ function init() {
 
 	terrain = new Terrain(WIDTH, HEIGHT, DEPTH, SCALE);
 
-	camera = new Camera();
-	camera.setPos(WIDTH/2, HEIGHT, DEPTH + 64);
-	camera.lookAt(WIDTH/2, HEIGHT/2, 0);
+	/* camera = new PerspectiveCamera();
+	camera.setPos(WIDTH, HEIGHT, DEPTH + 64);
+	camera.lookAt(0, 0, 0); */
+
+	camera = new OrthographicCamera();
+	camera.setPos(WIDTH, HEIGHT, DEPTH + 64);
+	camera.lookAt(0, 0, 0);
 
 	resize();
 	render();
@@ -37,14 +41,20 @@ function resize() {
 	canvas.width = window.innerWidth; // px
 	canvas.height = window.innerHeight; // px
 
-	camera.width = canvas.width / VOXEL_SIZE; // voxels
-	camera.height = canvas.height / VOXEL_SIZE; // voxels
+	camera.width = canvas.width / VOXEL_SIZE + 1; // voxels
+	camera.height = canvas.height / VOXEL_SIZE + 1; // voxels
 }
 
 function render() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 	camera.render(ctx);
+
+	// slow spin
+	var angle = Math.PI/1000;
+	camera.position.x = camera.position.x*Math.cos(angle) - camera.position.y*Math.sin(angle);
+	camera.position.y = camera.position.x*Math.sin(angle) + camera.position.y*Math.cos(angle);
+	camera.lookAt(0, 0, 0);
 
 	requestAnimationFrame(render);
 }
