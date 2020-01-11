@@ -81,7 +81,7 @@ function animate() {
 		player.move(camera.right.multiply(-right*2));
 	}
 	if(rotate != 0) {
-		camera.phi += rotate*Math.PI/32;
+		camera.phi -= rotate*Math.PI/32;
 	}
 
 	scene.update();
