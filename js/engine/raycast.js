@@ -1,8 +1,3 @@
-function voxelTest(x, y, z) {
-  // return voxel content
-  return terrain.get(terrain.toLocal(new Vector(x, y, z)));
-}
-
 /**
  * Call the callback with (x,y,z,value,face) of all blocks along the line
  * segment from point 'origin' in vector direction 'direction' of length
@@ -65,13 +60,13 @@ function raycast(origin, direction, radius, callback) {
   radius /= Math.sqrt(dx*dx+dy*dy+dz*dz);
 
   while (/* ray has not gone past bounds of world */
-         (stepX > 0 ? x < terrain.width : x >= 0) &&
-         (stepY > 0 ? y < terrain.height : y >= 0) &&
-         (stepZ > 0 ? z < terrain.depth : z >= 0)) {
+         (stepX > 0 ? x < scene.width : x >= 0) &&
+         (stepY > 0 ? y < scene.height : y >= 0) &&
+         (stepZ > 0 ? z < scene.depth : z >= 0)) {
 
     // Invoke the callback, unless we are not *yet* within the bounds of the
     // world.
-    if (!(x < 0 || y < 0 || z < 0 || x >= terrain.width || y >= terrain.height || z >= terrain.depth))
+    if (!(x < 0 || y < 0 || z < 0 || x >= scene.width || y >= scene.height || z >= scene.depth))
       var result = callback(x, y, z, face);
       if (result > 0)
         return result;
