@@ -1,5 +1,7 @@
 var canvas, ctx, terrain, camera;
 
+var times = [];
+
 var VOXEL_SIZE = 8; // px
 
 var WIDTH = 256;
@@ -74,9 +76,20 @@ function render() {
 	camera.position.y = camera.position.x*Math.sin(angle) + camera.position.y*Math.cos(angle);
 	camera.lookAt(0, 0, 0);
 
+	calculateFps();
 	requestAnimationFrame(render);
 }
 
 function randbetween(min, max) {
 	return Math.random()*(max - min) + min;
+}
+
+function calculateFps() {
+	var now = performance.now();
+    while (times.length > 0 && times[0] <= now - 1000) {
+      times.shift();
+    }
+    times.push(now);
+    var fps = times.length;
+    // console.log("fps: "+fps);
 }
