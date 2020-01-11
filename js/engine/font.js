@@ -1,4 +1,4 @@
-function Texture() {
+function Font() {
 	this.canvas = document.createElement("canvas");
 	this.ctx = this.canvas.getContext("2d");
 	this.canvas.width = 0;
@@ -95,13 +95,13 @@ function Resources() {
     }
 
     this.get = function(url) {	
-        return this.resourceCache[url];
+        return self.resourceCache[url];
     }
 
     this.isReady = function() {
         var ready = true;
-        for(var k in this.resourceCache) {
-            if(this.resourceCache.hasOwnProperty(k) && !this.resourceCache[k]) {
+        for(var k in self.resourceCache) {
+            if(self.resourceCache.hasOwnProperty(k) && !self.resourceCache[k]) {
                 ready = false;
             }
         }
@@ -109,6 +109,6 @@ function Resources() {
     }
 
     this.onReady = function(func) {
-    	this.readyCallbacks.push(func);
+    	self.readyCallbacks.push(func);
     }
 }

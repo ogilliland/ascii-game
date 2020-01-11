@@ -1,8 +1,8 @@
-var canvas, ctx, terrain, camera, texture;
+var canvas, ctx, terrain, camera, font;
 
 var times = [];
 
-// TO DO - remove this and get from texture map instead
+// TO DO - remove this and get from font map instead
 var VOXEL_SIZE = 12; // px
 
 var WIDTH = 64;
@@ -23,7 +23,7 @@ function init() {
 	canvas = document.getElementById("canvas");
 	ctx = canvas.getContext("2d");
 
-	texture = new Texture();
+	font = new Font();
 
 	terrain = new Terrain(WIDTH, HEIGHT, DEPTH, SCALE);
 	terrain.position.x = -1 * WIDTH/2;
