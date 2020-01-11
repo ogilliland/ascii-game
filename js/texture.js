@@ -82,7 +82,7 @@ function Resources() {
         }
     }
 
-    // Load an image url or an array of image urls
+    // load an image url or an array of image urls
     this.load = function(urlOrArr) {
         if(urlOrArr instanceof Array) {
             urlOrArr.forEach(function(url) {
@@ -101,8 +101,7 @@ function Resources() {
     this.isReady = function() {
         var ready = true;
         for(var k in this.resourceCache) {
-            if(this.resourceCache.hasOwnProperty(k) &&
-               !this.resourceCache[k]) {
+            if(this.resourceCache.hasOwnProperty(k) && !this.resourceCache[k]) {
                 ready = false;
             }
         }

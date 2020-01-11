@@ -11,26 +11,6 @@ var DEPTH = 32;
 
 var SCALE = 128;
 
-// TO DO - remove
-var COLORS = [
-	"#17111D", // black-ish
-	"#4E4E4E", // dark-grey
-	"#716E61", // grey
-	"#86949F", // light-grey
-	"#D7E7D0", // white-ish
-	"#462428", // red-earth
-	"#814D30", // root-beer
-	"#D3494E", // faded-red
-	"#CD7F32", // bronze
-	"#D4A798", // flesh
-	"#E3CF57", // banana
-	"#333366", // dark-blue
-	"#5D76CB", // blue
-	"#7AC5CD", // light-blue
-	"#287328", // dark-green
-	"#71AA34"  // light-green
-];
-
 window.onload = function() {
 	init();
 }
