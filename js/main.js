@@ -1,7 +1,8 @@
-var canvas, ctx, terrain, camera;
+var canvas, ctx, terrain, camera, texture;
 
 var times = [];
 
+// TO DO - remove this and get from texture map instead
 var VOXEL_SIZE = 12; // px
 
 var WIDTH = 256;
@@ -10,6 +11,7 @@ var DEPTH = 32;
 
 var SCALE = 128;
 
+// TO DO - remove
 var COLORS = [
 	"#17111D", // black-ish
 	"#4E4E4E", // dark-grey
@@ -41,6 +43,8 @@ function init() {
 	canvas = document.getElementById("canvas");
 	ctx = canvas.getContext("2d");
 
+	texture = new Texture();
+
 	terrain = new Terrain(WIDTH, HEIGHT, DEPTH, SCALE);
 	terrain.position.x = -1 * WIDTH/2;
 	terrain.position.y = -1 * HEIGHT/2;
@@ -60,6 +64,11 @@ function init() {
 function resize() {
 	canvas.width = window.innerWidth; // px
 	canvas.height = window.innerHeight; // px
+
+	ctx.webkitImageSmoothingEnabled = false;
+	ctx.mozImageSmoothingEnabled = false;
+	ctx.msImageSmoothingEnabled = false;
+	ctx.imageSmoothingEnabled = false;
 
 	camera.width = canvas.width / VOXEL_SIZE + 1; // voxels
 	camera.height = canvas.height / VOXEL_SIZE + 1; // voxels
@@ -91,5 +100,5 @@ function calculateFps() {
     }
     times.push(now);
     var fps = times.length;
-    // console.log("fps: "+fps);
+ 	// console.log("fps: "+fps);
 }

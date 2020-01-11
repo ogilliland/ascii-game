@@ -43,6 +43,7 @@ function PerspectiveCamera() {
 					Math.round(end.z)
 				);
 
+				// TO DO - update with texture glyphs from orthographic camera
 				ctx.fillStyle = COLORS[target];
 				ctx.fillRect(x*VOXEL_SIZE, y*VOXEL_SIZE, VOXEL_SIZE, VOXEL_SIZE);
 			}
@@ -94,8 +95,9 @@ function OrthographicCamera() {
 					Math.round(end.z)
 				);
 
-				ctx.fillStyle = COLORS[target];
-				ctx.fillRect(x*VOXEL_SIZE, y*VOXEL_SIZE, VOXEL_SIZE, VOXEL_SIZE);
+				texture.drawGlyph(ctx, x*VOXEL_SIZE, y*VOXEL_SIZE, 15, target, 42);
+				// ctx.fillStyle = COLORS[target];
+				// ctx.fillRect(x*VOXEL_SIZE, y*VOXEL_SIZE, VOXEL_SIZE, VOXEL_SIZE);
 			}
 		}
 	}
