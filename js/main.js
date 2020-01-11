@@ -2,7 +2,7 @@ var canvas, ctx, terrain, camera;
 
 var times = [];
 
-var VOXEL_SIZE = 8; // px
+var VOXEL_SIZE = 12; // px
 
 var WIDTH = 256;
 var HEIGHT = 256;
