@@ -5,6 +5,8 @@ function OrthographicCamera() {
 	this.thresholdMax = 512;
 	this.position = new Vector();
 	this.direction = new Vector();
+	this.theta = Math.PI/4;
+	this.phi = Math.PI/4;
 	this.right = new Vector();
 	this.up = new Vector();
 	var self = this;
@@ -28,18 +30,33 @@ function OrthographicCamera() {
 
 	this.refresh = function() {
 		self.ctx.clearRect(0, 0, self.ctx.canvas.width, self.ctx.canvas.height);
+		if(self.target) {
+			self.setPos(self.target.position.add(Vector.fromAngles(self.theta, self.phi).multiply(scene.depth*2)));
+			self.lookAt(self.target.position);
+		}
 	}
 
-	this.setPos = function(x, y, z) {
-		self.position.x = x;
-		self.position.y = y;
-		self.position.z = z;
+	this.setPos = function(vector) {
+		self.position = vector;
 	}
 
-	this.lookAt = function(x, y, z) {
-		self.direction = new Vector(x, y, z).subtract(self.position).unit();
+	this.setAngle = function(theta, phi) {
+		self.theta = theta;
+		self.phi = phi;
+	}
+
+	this.lookAt = function(vector) {
+		self.direction = vector.subtract(self.position).unit();
 		self.right = new Vector(0, 0, 1).cross(self.direction).unit();
 		self.up = self.right.cross(self.direction);
+	}
+
+	this.follow = function(target) {
+		self.target = target;
+	}
+
+	this.unfollow = function() {
+		self.target = null;
 	}
 
 	this.render = function() {

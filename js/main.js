@@ -37,23 +37,16 @@ function init() {
 
 	camera = new OrthographicCamera();
 	camera.setContext(ctx);
-	camera.setPos(scene.width/2, scene.height/2, scene.depth + 32);
-	camera.lookAt(0, 0, 0);
+	// camera.setPos(new Vector(scene.width/2, scene.height/2, scene.depth + 32));
+	// camera.lookAt(new Vector(0, 0, 0));
+
+	camera.follow(player);
 
 	camera.resize();
 	animate();
 }
 
 function animate() {
-	camera.refresh();
-	camera.render();
-
-	// slow spin
-	var angle = Math.PI/100;
-	camera.position.x = camera.position.x*Math.cos(angle) - camera.position.y*Math.sin(angle);
-	camera.position.y = camera.position.x*Math.sin(angle) + camera.position.y*Math.cos(angle);
-	camera.lookAt(0, 0, 0);
-
 	// move player
 	var up = 0;
 	var right = 0;
@@ -72,13 +65,16 @@ function animate() {
 	}
 
 	if(up != 0) {
-		player.move(camera.direction.multiply(up));
+		player.move(camera.direction.multiply(up*4));
 	}
 	if(right != 0) {
-		player.move(camera.right.multiply(-right));
+		player.move(camera.right.multiply(-right*4));
 	}
 
 	scene.update();
+
+	camera.refresh();
+	camera.render();
 
 	calculateFps();
 	requestAnimationFrame(animate);
