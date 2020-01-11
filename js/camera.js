@@ -123,8 +123,8 @@ function ray(x1, y1, z1, x2, y2, z2) {
 		for (var i = 0; i < l; i++) {
 			
 			// return first non-air block encountered
-			if(terrain.get(x, y, z) > 0) {
-				return terrain.get(x, y, z);
+			if(terrain.world(x, y, z) > 0) {
+				return terrain.world(x, y, z);
 			}
 
 			if (err_1 > 0) {
@@ -145,8 +145,8 @@ function ray(x1, y1, z1, x2, y2, z2) {
 		for (i = 0; i < m; i++) {
 		   	
 		   	// return first non-air block encountered
-			if(terrain.get(x, y, z) > 0) {
-				return terrain.get(x, y, z);
+			if(terrain.world(x, y, z) > 0) {
+				return terrain.world(x, y, z);
 			}
 
 			if (err_1 > 0) {
@@ -167,8 +167,8 @@ function ray(x1, y1, z1, x2, y2, z2) {
 		for (i = 0; i < n; i++) {
 			
 			// return first non-air block encountered
-			if(terrain.get(x, y, z) > 0) {
-				return terrain.get(x, y, z);
+			if(terrain.world(x, y, z) > 0) {
+				return terrain.world(x, y, z);
 			}
 
 			if (err_1 > 0) {
