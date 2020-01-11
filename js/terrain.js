@@ -6,26 +6,31 @@ function Terrain(width, height, depth, scale) {
     this.position = new Vector();
     this.map = new Uint8Array(width*height*depth);
 
-    this.set = function(x, y, z, voxel) {
-        if(x >= 0 && x < this.width && y >= 0 && y < this.height && z >= 0 && z < this.depth) {
-            this.map[x + y*this.width + z*this.width*this.height] = voxel;
+    this.set = function(vector, voxel) {
+        if(vector.x >= 0 && vector.x < this.width && vector.y >= 0 && vector.y < this.height && vector.z >= 0 && vector.z < this.depth) {
+            this.map[vector.x + vector.y*this.width + vector.z*this.width*this.height] = voxel;
         } else {
             // ERROR - out of range
         }
     }
 
-    this.get = function(x, y, z) {
-        if(x >= 0 && x < this.width && y >= 0 && y < this.height && z >= 0 && z < this.depth) {
-            return this.map[x + y*this.width + z*this.width*this.height];
+    this.get = function(vector) {
+        if(vector.x >= 0 && vector.x < this.width && vector.y >= 0 && vector.y < this.height && vector.z >= 0 && vector.z < this.depth) {
+            return this.map[vector.x + vector.y*this.width + vector.z*this.width*this.height];
         } else {
             // ERROR - out of range
             return null;
         }
     }
 
-    // convert local coordinates to world coordinates
-    this.world = function(x, y, z) {
-        return this.get(x - this.position.x, y - this.position.y, z - this.position.z);
+    // convert world coordinates to local coordinates
+    this.toLocal = function(vector) {
+        return vector.subtract(this.position);
+    }
+
+    // check if voxel exists at these coordinates
+    this.isSolid = function(vector) {
+        return this.get(vector) > 0;
     }
 
     this.init = function() {
@@ -46,7 +51,7 @@ function Terrain(width, height, depth, scale) {
                     } else {
                         var voxel = 0;
                     }
-                    this.set(x, y, z, voxel);
+                    this.set(new Vector(x, y, z), voxel);
                 }
             }
         }

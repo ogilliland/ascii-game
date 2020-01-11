@@ -18,69 +18,86 @@ function raycast(x1, y1, z1, x2, y2, z2) {
     var err_1 = dy2 - l;
     var err_2 = dz2 - l;
     for (var i = 0; i < l; i++) {
-      
-      // return first non-air block encountered
-      if(terrain.world(x, y, z) > 0) {
-        return terrain.world(x, y, z);
-      }
-
       if (err_1 > 0) {
         y += y_inc;
         err_1 -= dx2;
+        // if voxel is solid, return its content
+        if(terrain.isSolid(terrain.toLocal(new Vector(x, y, z))) > 0) {
+          return terrain.get(terrain.toLocal(new Vector(x, y, z)));
+        }
       }
       if (err_2 > 0) {
         z += z_inc;
         err_2 -= dx2;
+        // if voxel is solid, return its content
+        if(terrain.isSolid(terrain.toLocal(new Vector(x, y, z))) > 0) {
+          return terrain.get(terrain.toLocal(new Vector(x, y, z)));
+        }
       }
       err_1 += dy2;
       err_2 += dz2;
       x += x_inc;
+      // if voxel is solid, return its content
+      if(terrain.isSolid(terrain.toLocal(new Vector(x, y, z))) > 0) {
+        return terrain.get(terrain.toLocal(new Vector(x, y, z)));
+      }
     }
   } else if ((m >= l) && (m >= n)) {
     err_1 = dx2 - m;
     err_2 = dz2 - m;
     for (i = 0; i < m; i++) {
-        
-        // return first non-air block encountered
-      if(terrain.world(x, y, z) > 0) {
-        return terrain.world(x, y, z);
-      }
-
       if (err_1 > 0) {
         x += x_inc;
         err_1 -= dy2;
+        // if voxel is solid, return its content
+        if(terrain.isSolid(terrain.toLocal(new Vector(x, y, z))) > 0) {
+          return terrain.get(terrain.toLocal(new Vector(x, y, z)));
+        }
       }
       if (err_2 > 0) {
         z += z_inc;
         err_2 -= dy2;
+        // if voxel is solid, return its content
+        if(terrain.isSolid(terrain.toLocal(new Vector(x, y, z))) > 0) {
+          return terrain.get(terrain.toLocal(new Vector(x, y, z)));
+        }
       }
       err_1 += dx2;
       err_2 += dz2;
       y += y_inc;
+      // if voxel is solid, return its content
+      if(terrain.isSolid(terrain.toLocal(new Vector(x, y, z))) > 0) {
+        return terrain.get(terrain.toLocal(new Vector(x, y, z)));
+      }
     }
   } else {
     err_1 = dy2 - n;
     err_2 = dx2 - n;
     for (i = 0; i < n; i++) {
-      
-      // return first non-air block encountered
-      if(terrain.world(x, y, z) > 0) {
-        return terrain.world(x, y, z);
-      }
-
       if (err_1 > 0) {
         y += y_inc;
         err_1 -= dz2;
+        // if voxel is solid, return its content
+        if(terrain.isSolid(terrain.toLocal(new Vector(x, y, z))) > 0) {
+          return terrain.get(terrain.toLocal(new Vector(x, y, z)));
+        }
       }
       if (err_2 > 0) {
         x += x_inc;
         err_2 -= dz2;
+        // if voxel is solid, return its content
+        if(terrain.isSolid(terrain.toLocal(new Vector(x, y, z))) > 0) {
+          return terrain.get(terrain.toLocal(new Vector(x, y, z)));
+        }
       }
       err_1 += dy2;
       err_2 += dx2;
       z += z_inc;
+      // if voxel is solid, return its content
+      if(terrain.isSolid(terrain.toLocal(new Vector(x, y, z))) > 0) {
+        return terrain.get(terrain.toLocal(new Vector(x, y, z)));
+      }
     }
   }
-
   return 0;
 }
