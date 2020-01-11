@@ -112,7 +112,7 @@ Vector.unit = function(a, b) {
   return b;
 };
 Vector.fromAngles = function(theta, phi) {
-  return new Vector(Math.cos(theta) * Math.cos(phi), Math.sin(phi), Math.sin(theta) * Math.cos(phi));
+  return new Vector(Math.cos(phi), Math.sin(phi), Math.sin(theta));
 };
 Vector.randomDirection = function() {
   return Vector.fromAngles(Math.random() * Math.PI * 2, Math.asin(Math.random() * 2 - 1));
