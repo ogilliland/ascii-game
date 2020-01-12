@@ -16,9 +16,6 @@ var playerControls = {
 
 var times = [];
 
-// TO DO - remove this and get from font map instead
-var VOXEL_SIZE = 12; // px
-
 window.onload = function() {
 	init();
 }

@@ -24,8 +24,8 @@ function OrthographicCamera() {
 		self.ctx.msImageSmoothingEnabled = false;
 		self.ctx.imageSmoothingEnabled = false;
 
-		self.width = self.ctx.canvas.width / VOXEL_SIZE + 1; // voxels
-		self.height = self.ctx.canvas.height / VOXEL_SIZE + 1; // voxels
+		self.width = self.ctx.canvas.width / font.glyphSize + 1; // voxels
+		self.height = self.ctx.canvas.height / font.glyphSize + 1; // voxels
 	}
 
 	this.refresh = function() {
@@ -73,7 +73,7 @@ function OrthographicCamera() {
 				var color = (target & (15 << 12)) >>> 12;
 				var bgColor = (target & (15 << 8)) >>> 8;
 				var glyph = target & 255;
-				font.drawGlyph(self.ctx, x*VOXEL_SIZE, y*VOXEL_SIZE, color, bgColor, glyph);
+				font.drawGlyph(self.ctx, x*font.glyphSize, y*font.glyphSize, color, bgColor, glyph);
 			}
 		}
 	}
