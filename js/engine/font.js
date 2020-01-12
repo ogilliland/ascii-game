@@ -5,7 +5,7 @@ function Font() {
 	this.canvas.height = 0;
 	this.colors = 16;
 	this.glyphs = 16; // per row or column
-	this.glyphSize = 0;
+	this.glyphSize = 12; // px
 	this.ready = false;
 	var self = this;
 
@@ -53,7 +53,7 @@ function Font() {
 		if(self.ready) {
 			var glyphX = bgColor*self.glyphs*self.glyphSize + (char%self.glyphs)*self.glyphSize;
 			var glyphY = color*self.glyphs*self.glyphSize + Math.floor(char/self.glyphs)*self.glyphSize;
-			ctx.drawImage(self.canvas, glyphX, glyphY, self.glyphSize, self.glyphSize, x, y, VOXEL_SIZE, VOXEL_SIZE);
+			ctx.drawImage(self.canvas, glyphX, glyphY, self.glyphSize, self.glyphSize, x, y, self.glyphSize, self.glyphSize);
 		}
 	}
 }
