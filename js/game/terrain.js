@@ -11,17 +11,17 @@ function Terrain(width, height, depth, scale) {
     this.map = new Uint16Array(width*height*depth);
     var self = this;
 
-    this.set = function(vector, voxel) {
-        if(vector.x >= 0 && vector.x < self.width && vector.y >= 0 && vector.y < self.height && vector.z >= 0 && vector.z < self.depth) {
-            self.map[vector.x + vector.y*self.width + vector.z*self.width*self.height] = voxel;
+    this.set = function(position, voxel) {
+        if(position.x >= 0 && position.x < self.width && position.y >= 0 && position.y < self.height && position.z >= 0 && position.z < self.depth) {
+            self.map[position.x + position.y*self.width + position.z*self.width*self.height] = voxel;
         } else {
             // ERROR - out of range
         }
     }
 
-    self.get = function(vector) {
-        if(vector.x >= 0 && vector.x < self.width && vector.y >= 0 && vector.y < self.height && vector.z >= 0 && vector.z < self.depth) {
-            return self.map[vector.x + vector.y*self.width + vector.z*self.width*self.height];
+    self.get = function(position, face = new Vector(0, 0, 1)) {
+        if(position.x >= 0 && position.x < self.width && position.y >= 0 && position.y < self.height && position.z >= 0 && position.z < self.depth) {
+            return self.map[position.x + position.y*self.width + position.z*self.width*self.height];
         } else {
             // ERROR - out of range
             return null;
@@ -29,13 +29,13 @@ function Terrain(width, height, depth, scale) {
     }
 
     // convert world coordinates to local coordinates
-    self.toLocal = function(vector) {
-        return vector.subtract(self.position);
+    self.toLocal = function(position) {
+        return position.subtract(self.position);
     }
 
     // check if voxel exists at these coordinates
-    self.isSolid = function(vector) {
-        return self.get(vector) > 0;
+    self.isSolid = function(position) {
+        return self.get(position) > 0;
     }
 
     this.noise = new SimplexNoise("seed");

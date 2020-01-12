@@ -67,7 +67,7 @@ function raycast(origin, direction, radius, callback) {
     // Invoke the callback, unless we are not *yet* within the bounds of the
     // world.
     if (!(x < 0 || y < 0 || z < 0 || x >= scene.width || y >= scene.height || z >= scene.depth))
-      var result = callback(x, y, z, face);
+      var result = callback(new Vector(x, y, z), face);
       if (result > 0)
         return result;
 

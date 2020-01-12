@@ -9,10 +9,10 @@ function Scene(width, height, depth) {
         self.children.push(object);
     }
 
-    this.voxelTest = function(x, y, z) {
+    this.voxelTest = function(position, face) {
         for(var i = 0; i < self.children.length; i++) {
-            if(self.children[i].isSolid(self.children[i].toLocal(new Vector(x, y, z)))) {
-                return self.children[i].get(self.children[i].toLocal(new Vector(x, y, z)));
+            if(self.children[i].isSolid(self.children[i].toLocal(position))) {
+                return self.children[i].get(self.children[i].toLocal(position), face);
             }
         }
     }
