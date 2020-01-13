@@ -69,11 +69,22 @@ function OrthographicCamera() {
 
 				var start = self.position.add(offset);
 				var target = raycast(start, self.direction, self.thresholdMax, scene.voxelTest);
+				target = target.concat(scene.spriteTest(start, self.direction, self.right, self.up));
 
 				if(target.length > 0) {
-					var color = (target[target.length-1].voxel & (15 << 12)) >>> 12;
-					var bgColor = (target[target.length-1].voxel & (15 << 8)) >>> 8;
-					var glyph = target[target.length-1].voxel & 255;
+					var minDepth = Infinity;
+					var color = 0;
+					var bgColor = 0;
+					var glyph = 0;
+					for(var i = 0; i < target.length; i++) {
+						if(target[i].depth < minDepth && target[i].voxel > 0) {
+							color = (target[i].voxel & (15 << 12)) >>> 12;
+							glyph = target[i].voxel & 255;
+							// TO DO - get bg color from shallowest solid voxel
+							bgColor = (target[i].voxel & (15 << 8)) >>> 8;
+							minDepth = target[i].depth;
+						}
+					}
 				} else {
 					var color = 0;
 					var bgColor = 0;
