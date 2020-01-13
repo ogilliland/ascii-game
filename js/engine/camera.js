@@ -70,9 +70,15 @@ function OrthographicCamera() {
 				var start = self.position.add(offset);
 				var target = raycast(start, self.direction, self.thresholdMax, scene.voxelTest);
 
-				var color = (target & (15 << 12)) >>> 12;
-				var bgColor = (target & (15 << 8)) >>> 8;
-				var glyph = target & 255;
+				if(target.length > 0) {
+					var color = (target[target.length-1].voxel & (15 << 12)) >>> 12;
+					var bgColor = (target[target.length-1].voxel & (15 << 8)) >>> 8;
+					var glyph = target[target.length-1].voxel & 255;
+				} else {
+					var color = 0;
+					var bgColor = 0;
+					var glyph = 0;
+				}
 				font.drawGlyph(self.ctx, x*font.glyphSize, y*font.glyphSize, color, bgColor, glyph);
 			}
 		}

@@ -11,8 +11,12 @@ function Scene(width, height, depth) {
 
     this.voxelTest = function(position, face) {
         for(var i = 0; i < self.children.length; i++) {
-            if(self.children[i].isSolid(self.children[i].toLocal(position))) {
-                return self.children[i].get(self.children[i].toLocal(position), face);
+            if(!self.children[i].hasOwnProperty("sprite")) {
+                return {
+                    "depth": position.dot(camera.direction),
+                    "isSolid": self.children[i].isSolid(self.children[i].toLocal(position)),
+                    "voxel": self.children[i].get(self.children[i].toLocal(position), face)
+                };
             }
         }
     }
