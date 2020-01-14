@@ -34,8 +34,21 @@ function Scene(width, height, depth) {
                 var depth = -1*between.dot(direction);
                 var horizontal = Math.round(between.dot(right));
                 var vertical = Math.round(between.dot(up));
-                // TO DO - calculate direction from camera angle and sprite angle
-                var spriteVoxel = self.children[i].sprite.get(horizontal, vertical);
+                // calculate direction from camera angle
+                // TO DO - offset by sprite angle
+                var betweenUnit = between.unit();
+                if(Math.abs(betweenUnit.x) > Math.abs(betweenUnit.y)) {
+                    var face = "+x";
+                    if(betweenUnit.x < 0) {
+                        face = "-x";
+                    }
+                } else if(Math.abs(betweenUnit.y) > Math.abs(betweenUnit.x)) {
+                    var face = "+y";
+                    if(betweenUnit.y < 0) {
+                        face = "-y";
+                    }
+                }
+                var spriteVoxel = self.children[i].sprite.get(horizontal, vertical, face);
                 if(spriteVoxel > 0) {
                     return {
                         "depth": depth,
