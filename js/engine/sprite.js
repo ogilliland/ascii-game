@@ -22,9 +22,8 @@ function Sprite() {
 				var hMax = self.data.size[0];
 				var vMax = self.data.size[1];
 			}
-			// TO DO - read voxels from self.data
 			if(h >= 0 && h < hMax && v >= 0 && v < vMax) {
-            	return self.data.voxels[direction][h + v*vMax];
+            	return self.data.voxels[direction][h + v*hMax];
             }
         } else {
             return 0;
