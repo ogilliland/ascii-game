@@ -15,12 +15,8 @@ function Character(width, height, depth) {
     }
 
     this.move = function(distance) {
+        // update position
         self.position = self.position.add(distance);
-        // force voxel position to whole integer values
-        // to prevent flickering of player sprite
-        self.position.x = Math.round(self.position.x);
-        self.position.y = Math.round(self.position.y);
-        self.position.z = Math.round(self.position.z);
         // update sprite angle
         self.sprite.angle = distance.toAngles().phi - Math.PI/2;
     }
