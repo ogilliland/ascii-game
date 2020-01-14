@@ -3,11 +3,28 @@ function Sprite() {
 	this.ready = false;
 	var self = this;
 
-	this.get = function(horizontal, vertical, face = new Vector(0, 0, 1)) {
+	this.get = function(horizontal, vertical, direction = "+y") {
 		if(self.ready) {
+			// TO DO - rotate depending on sprite rotation
+			if(direction == "+x" || direction == "-x") {
+				var h = horizontal + self.data.origin[1]; // y
+				var v = vertical + self.data.origin[2]; // z
+				var hMax = self.data.size[1];
+				var vMax = self.data.size[2];
+			} else if (direction == "+y" || direction == "-y") {
+				var h = horizontal + self.data.origin[0]; // x
+				var v = vertical + self.data.origin[2]; // z
+				var hMax = self.data.size[0];
+				var vMax = self.data.size[2];
+			} else {
+				var h = horizontal + self.data.origin[0]; // x
+				var v = vertical + self.data.origin[1]; // y
+				var hMax = self.data.size[0];
+				var vMax = self.data.size[1];
+			}
 			// TO DO - read voxels from self.data
-			if(horizontal == 0 && vertical == 0) {
-            	return 4 << 12 | 2;
+			if(h >= 0 && h < hMax && v >= 0 && v < vMax) {
+            	return self.data.voxels[direction][h + v*vMax];
             }
         } else {
             return 0;

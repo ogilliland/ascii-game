@@ -4,10 +4,6 @@ function Character(width, height, depth) {
     this.sprite.load("data/sprite/player.json");
     var self = this;
 
-    this.get = function(position, face) {
-        return self.sprite.get(position, face);
-    }
-
     // convert world coordinates to local coordinates
     this.toLocal = function(position) {
         return position.subtract(self.position);
