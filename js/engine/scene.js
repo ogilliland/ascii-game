@@ -37,14 +37,16 @@ function Scene(width, height, depth) {
                 // calculate direction from camera angle
                 // TO DO - offset by sprite angle
                 var betweenUnit = between.unit();
-                if(Math.abs(betweenUnit.x) > Math.abs(betweenUnit.y)) {
+                var a = betweenUnit.x*Math.cos(self.children[i].sprite.angle) + betweenUnit.y*Math.sin(self.children[i].sprite.angle);
+                var b = betweenUnit.y*Math.cos(self.children[i].sprite.angle) - betweenUnit.x*Math.sin(self.children[i].sprite.angle);
+                if(Math.abs(a) > Math.abs(b)) {
                     var face = "+x";
-                    if(betweenUnit.x < 0) {
+                    if(a < 0) {
                         face = "-x";
                     }
-                } else if(Math.abs(betweenUnit.y) > Math.abs(betweenUnit.x)) {
+                } else {
                     var face = "+y";
-                    if(betweenUnit.y < 0) {
+                    if(b < 0) {
                         face = "-y";
                     }
                 }

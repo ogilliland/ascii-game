@@ -1,5 +1,6 @@
 function Sprite() {
 	this.data = {};
+	this.angle = 0;
 	this.ready = false;
 	var self = this;
 

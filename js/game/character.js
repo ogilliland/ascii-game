@@ -21,6 +21,8 @@ function Character(width, height, depth) {
         self.position.x = Math.round(self.position.x);
         self.position.y = Math.round(self.position.y);
         self.position.z = Math.round(self.position.z);
+        // update sprite angle
+        self.sprite.angle = distance.toAngles().phi - Math.PI/2;
     }
 
     this.update = function() {
