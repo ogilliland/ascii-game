@@ -73,16 +73,19 @@ function OrthographicCamera() {
 
 				if(target.length > 0) {
 					var minDepth = Infinity;
+					var minBgDepth = Infinity;
 					var color = 0;
 					var bgColor = 0;
 					var glyph = 0;
 					for(var i = 0; i < target.length; i++) {
-						if(target[i].depth < minDepth && target[i].voxel > 0) {
+						if(target[i].depth < minDepth) {
 							color = (target[i].voxel & (15 << 12)) >>> 12;
 							glyph = target[i].voxel & 255;
-							// TO DO - get bg color from shallowest solid voxel
-							bgColor = (target[i].voxel & (15 << 8)) >>> 8;
 							minDepth = target[i].depth;
+						}
+						if(target[i].depth < minBgDepth && target[i].isSolid) {
+							bgColor = (target[i].voxel & (15 << 8)) >>> 8;
+							minBgDepth = target[i].depth;
 						}
 					}
 				} else {

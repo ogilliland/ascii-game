@@ -54,7 +54,7 @@ function Scene(width, height, depth) {
                 if(spriteVoxel > 0) {
                     return {
                         "depth": depth,
-                        "isSolid": 1,
+                        "isSolid": self.children[i].sprite.isSolid(horizontal, vertical, face),
                         "voxel": spriteVoxel
                     };
                 }

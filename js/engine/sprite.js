@@ -6,7 +6,6 @@ function Sprite() {
 
 	this.get = function(horizontal, vertical, face = "+y") {
 		if(self.ready) {
-			// TO DO - rotate depending on sprite rotation
 			if(face == "+x" || face == "-x") {
 				var h = horizontal + self.data.origin[1]; // y
 				var v = vertical + self.data.origin[2]; // z
@@ -20,6 +19,27 @@ function Sprite() {
 			}
 			if(h >= 0 && h < hMax && v >= 0 && v < vMax) {
             	return self.data.voxels[face][h + v*hMax];
+            }
+        } else {
+            return 0;
+        }
+	}
+
+	this.isSolid = function(horizontal, vertical, face) {
+		if(self.ready) {
+			if(face == "+x" || face == "-x") {
+				var h = horizontal + self.data.origin[1]; // y
+				var v = vertical + self.data.origin[2]; // z
+				var hMax = self.data.size[1];
+				var vMax = self.data.size[2];
+			} else if (face == "+y" || face == "-y") {
+				var h = horizontal + self.data.origin[0]; // x
+				var v = vertical + self.data.origin[2]; // z
+				var hMax = self.data.size[0];
+				var vMax = self.data.size[2];
+			}
+			if(h >= 0 && h < hMax && v >= 0 && v < vMax) {
+            	return self.data.solidMap[face][h + v*hMax];
             }
         } else {
             return 0;
