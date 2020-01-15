@@ -31,7 +31,7 @@ function Scene(width, height, depth) {
         for(var i = 0; i < self.children.length; i++) {
             if(self.children[i].hasOwnProperty("sprite")) {
                 var between = origin.subtract(self.children[i].position);
-                var depth = -1*between.dot(direction);
+                var depth = -1*between.dot(direction) - 1;
                 var horizontal = Math.round(between.dot(right));
                 var vertical = Math.round(between.dot(up));
                 // calculate direction from camera angle
