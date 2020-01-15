@@ -38,12 +38,11 @@ function init() {
 	player = new Character();
 	player.position.x = scene.width/2;
 	player.position.y = scene.height/2;
+	player.position.z = scene.depth;
 	scene.addChild(player);
 
 	camera = new OrthographicCamera();
 	camera.setContext(ctx);
-	// camera.setPos(new Vector(scene.width/2, scene.height/2, scene.depth + 32));
-	// camera.lookAt(new Vector(0, 0, 0));
 
 	camera.follow(player);
 
@@ -76,16 +75,16 @@ function animate() {
 		rotate--;
 	}
 
-	// TO DO - fix variable speed due to player position rounding
-	var speed = 2;
 	if(up*right != 0) {
-		speed = Math.sqrt(speed);
+		var speedRatio = Math.sin(Math.PI/4); // side length of right triangle with o = a = 1
+	} else {
+		var speedRatio = 1;
 	}
 	if(up != 0) {
-		player.move(camera.direction.multiply(up*speed));
+		player.move(camera.direction.multiply(up*speedRatio));
 	}
 	if(right != 0) {
-		player.move(camera.right.multiply(-right*speed));
+		player.move(camera.right.multiply(-right*speedRatio));
 	}
 	if(rotate != 0) {
 		camera.phi -= rotate*Math.PI/32;
