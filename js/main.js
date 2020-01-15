@@ -75,15 +75,16 @@ function animate() {
 		rotate--;
 	}
 
-	var speed = player.speed;
 	if(up*right != 0) {
-		speed = Math.sqrt(speed);
+		var speedRatio = Math.sin(Math.PI/4); // side length of right triangle with o = a = 1
+	} else {
+		var speedRatio = 1;
 	}
 	if(up != 0) {
-		player.move(camera.direction.multiply(up*speed));
+		player.move(camera.direction.multiply(up*speedRatio));
 	}
 	if(right != 0) {
-		player.move(camera.right.multiply(-right*speed));
+		player.move(camera.right.multiply(-right*speedRatio));
 	}
 	if(rotate != 0) {
 		camera.phi -= rotate*Math.PI/32;

@@ -1,6 +1,9 @@
 function Character(width, height, depth) {
     this.position = new Vector();
-    this.speed = 2;
+    this.velocity = new Vector();
+    this.acceleration = 1;
+    this.maxSpeed = 2;
+    this.friction = 0.5; // multiplier for speed
     this.sprite = new Sprite();
     this.sprite.load("data/sprite/player.json");
     var self = this;
@@ -15,11 +18,29 @@ function Character(width, height, depth) {
         return self.get(position) > 0;
     }
 
-    this.move = function(distance) {
-        // update position
-        self.position = self.position.add(distance);
+    this.move = function(direction) {
+        // update velocity
+        self.velocity.x += direction.x * self.acceleration;
+        self.velocity.y += direction.y * self.acceleration;
+        // limit max speed in the x-y plane
+        var planeVelocity = new Vector(self.velocity.x, self.velocity.y, 0);
+        if(planeVelocity.length() > self.maxSpeed) {
+            planeVelocity = planeVelocity.unit().multiply(self.maxSpeed);
+        }
+        self.velocity.x = planeVelocity.x;
+        self.velocity.y = planeVelocity.y;
+        /* if (self.velocity.x > self.maxSpeed) {
+            self.velocity.x = self.maxSpeed;
+        } else if (self.velocity.x < -1*self.maxSpeed) {
+            self.velocity.x = -1*self.maxSpeed;
+        }
+        if (self.velocity.y > self.maxSpeed) {
+            self.velocity.y = self.maxSpeed;
+        } else if (self.velocity.y < -1*self.maxSpeed) {
+            self.velocity.y = -1*self.maxSpeed;
+        } */
         // update sprite angle
-        self.sprite.angle = distance.toAngles().phi - Math.PI/2;
+        self.sprite.angle = direction.toAngles().phi - Math.PI/2;
     }
 
     this.update = function() {
@@ -29,13 +50,17 @@ function Character(width, height, depth) {
             if(target.length > 0) {
                 var depth = Math.round(target[target.length-1].depth);
                 if(depth <= height) {
-                    self.position.z += height - depth;
+                    self.position.z += height - depth
+                    self.velocity.z = 0;
                 } else if(depth > 1) {
-                    self.position.z--;
+                    self.velocity.z -= 1;
                 }
             } else {
-                self.position.z--;
+                self.velocity.z -= 1;
             }
         }
+        // update position and velocity
+        self.position = self.position.add(self.velocity);
+        self.velocity = self.velocity.multiply(self.friction);
     }
 }
