@@ -29,16 +29,6 @@ function Character(width, height, depth) {
         }
         self.velocity.x = planeVelocity.x;
         self.velocity.y = planeVelocity.y;
-        /* if (self.velocity.x > self.maxSpeed) {
-            self.velocity.x = self.maxSpeed;
-        } else if (self.velocity.x < -1*self.maxSpeed) {
-            self.velocity.x = -1*self.maxSpeed;
-        }
-        if (self.velocity.y > self.maxSpeed) {
-            self.velocity.y = self.maxSpeed;
-        } else if (self.velocity.y < -1*self.maxSpeed) {
-            self.velocity.y = -1*self.maxSpeed;
-        } */
         // update sprite angle
         self.sprite.angle = direction.toAngles().phi - Math.PI/2;
     }
@@ -46,7 +36,7 @@ function Character(width, height, depth) {
     this.update = function() {
         if(self.sprite.ready) {
             var height = self.sprite.data.size[2];
-            var target = raycast(self.position.add(new Vector(0, 0, height)), new Vector(0, 0, -1), self.speed*4, scene.voxelTest);
+            var target = raycast(self.position.add(new Vector(0, 0, height)), new Vector(0, 0, -1), self.maxSpeed*4, scene.voxelTest);
             if(target.length > 0) {
                 var depth = Math.round(target[target.length-1].depth);
                 if(depth <= height) {
