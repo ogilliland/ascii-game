@@ -9,19 +9,23 @@ function Terrain(width, height, depth, scale) {
     // bits 4 - 7  : bgColor
     // bits 8 - 15 : glyph
     this.map = new Uint16Array(width*height*depth);
+    // 0 = transparent (or nonexistent)
+    // 1 = solid
+    this.solidMap = new Uint8Array(width*height*depth);
     var self = this;
 
-    this.set = function(vector, voxel) {
-        if(vector.x >= 0 && vector.x < self.width && vector.y >= 0 && vector.y < self.height && vector.z >= 0 && vector.z < self.depth) {
-            self.map[vector.x + vector.y*self.width + vector.z*self.width*self.height] = voxel;
+    this.set = function(position, voxel, solid = 1) {
+        if(position.x >= 0 && position.x < self.width && position.y >= 0 && position.y < self.height && position.z >= 0 && position.z < self.depth) {
+            self.map[position.x + position.y*self.width + position.z*self.width*self.height] = voxel;
+            self.solidMap[position.x + position.y*self.width + position.z*self.width*self.height] = solid;
         } else {
             // ERROR - out of range
         }
     }
 
-    self.get = function(vector) {
-        if(vector.x >= 0 && vector.x < self.width && vector.y >= 0 && vector.y < self.height && vector.z >= 0 && vector.z < self.depth) {
-            return self.map[vector.x + vector.y*self.width + vector.z*self.width*self.height];
+    this.get = function(position, face = new Vector(0, 0, 1)) {
+        if(position.x >= 0 && position.x < self.width && position.y >= 0 && position.y < self.height && position.z >= 0 && position.z < self.depth) {
+            return self.map[position.x + position.y*self.width + position.z*self.width*self.height];
         } else {
             // ERROR - out of range
             return null;
@@ -29,13 +33,18 @@ function Terrain(width, height, depth, scale) {
     }
 
     // convert world coordinates to local coordinates
-    self.toLocal = function(vector) {
-        return vector.subtract(self.position);
+    this.toLocal = function(position) {
+        return position.subtract(self.position);
     }
 
-    // check if voxel exists at these coordinates
-    self.isSolid = function(vector) {
-        return self.get(vector) > 0;
+    // check if solid voxel exists at these coordinates
+    this.isSolid = function(position) {
+        if(position.x >= 0 && position.x < self.width && position.y >= 0 && position.y < self.height && position.z >= 0 && position.z < self.depth) {
+            return self.solidMap[position.x + position.y*self.width + position.z*self.width*self.height];
+        } else {
+            // ERROR - out of range
+            return null;
+        }
     }
 
     this.noise = new SimplexNoise("seed");
@@ -98,7 +107,11 @@ function Terrain(width, height, depth, scale) {
                     }
                 }
                 var voxel = color << 12 | bgColor << 8 | glyph;
-                this.set(new Vector(x, y, z), voxel);
+                var solid = 0;
+                if(voxel > 0) {
+                    solid = 1;
+                }
+                this.set(new Vector(x, y, z), voxel, solid);
             }
         }
     }

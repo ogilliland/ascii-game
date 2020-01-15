@@ -69,10 +69,30 @@ function OrthographicCamera() {
 
 				var start = self.position.add(offset);
 				var target = raycast(start, self.direction, self.thresholdMax, scene.voxelTest);
+				target = target.concat(scene.spriteTest(start, self.direction, self.right, self.up));
 
-				var color = (target & (15 << 12)) >>> 12;
-				var bgColor = (target & (15 << 8)) >>> 8;
-				var glyph = target & 255;
+				if(target.length > 0) {
+					var minDepth = Infinity;
+					var minBgDepth = Infinity;
+					var color = 0;
+					var bgColor = 0;
+					var glyph = 0;
+					for(var i = 0; i < target.length; i++) {
+						if(target[i].depth < minDepth) {
+							color = (target[i].voxel & (15 << 12)) >>> 12;
+							glyph = target[i].voxel & 255;
+							minDepth = target[i].depth;
+						}
+						if(target[i].depth < minBgDepth && target[i].isSolid) {
+							bgColor = (target[i].voxel & (15 << 8)) >>> 8;
+							minBgDepth = target[i].depth;
+						}
+					}
+				} else {
+					var color = 0;
+					var bgColor = 0;
+					var glyph = 0;
+				}
 				font.drawGlyph(self.ctx, x*font.glyphSize, y*font.glyphSize, color, bgColor, glyph);
 			}
 		}

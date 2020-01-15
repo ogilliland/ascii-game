@@ -50,10 +50,13 @@ function raycast(origin, direction, radius, callback) {
   var tDeltaZ = stepZ/dz;
   // Buffer for reporting faces to the callback.
   var face = new Vector();
+  // Array for storing the voxels that have been traversed
+  var result = [];
 
   // Avoids an infinite loop.
-  if (dx === 0 && dy === 0 && dz === 0)
+  if (dx === 0 && dy === 0 && dz === 0) {
     throw new RangeError("Raycast in zero direction!");
+  }
 
   // Rescale from units of 1 cube-edge to units of 'direction' so we can
   // compare with 't'.
@@ -66,10 +69,15 @@ function raycast(origin, direction, radius, callback) {
 
     // Invoke the callback, unless we are not *yet* within the bounds of the
     // world.
-    if (!(x < 0 || y < 0 || z < 0 || x >= scene.width || y >= scene.height || z >= scene.depth))
-      var result = callback(x, y, z, face);
-      if (result > 0)
-        return result;
+    if (!(x < 0 || y < 0 || z < 0 || x >= scene.width || y >= scene.height || z >= scene.depth)) {
+      var temp = callback(new Vector(x, y, z), face);
+      if(temp.voxel > 0) {
+        result.push(temp);
+        if (temp.isSolid) {
+          return result;
+        }
+      }
+    }
 
     // tMaxX stores the t-value at which we cross a cube boundary along the
     // X axis, and similarly for Y and Z. Therefore, choosing the least tMax
@@ -114,6 +122,7 @@ function raycast(origin, direction, radius, callback) {
       }
     }
   }
+  return result;
 }
 
 function intbound(s, ds) {
