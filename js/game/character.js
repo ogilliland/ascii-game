@@ -1,5 +1,6 @@
 function Character(width, height, depth) {
     this.position = new Vector();
+    this.speed = 2;
     this.sprite = new Sprite();
     this.sprite.load("data/sprite/player.json");
     var self = this;
@@ -22,6 +23,20 @@ function Character(width, height, depth) {
     }
 
     this.update = function() {
-        self.position.z = scene.depth*3/4; // TO DO - remove
+        if(self.sprite.ready) {
+            var height = self.sprite.data.size[2];
+            var target = raycast(self.position.add(new Vector(0, 0, height)), new Vector(0, 0, -1), self.speed*4, scene.voxelTest);
+            if(target.length > 0) {
+                var depth = Math.round(target[target.length-1].depth);
+                console.log(depth);
+                if(depth <= height) {
+                    self.position.z += height - depth;
+                } else if(depth > 1) {
+                    self.position.z--;
+                }
+            } else {
+                self.position.z--;
+            }
+        }
     }
 }

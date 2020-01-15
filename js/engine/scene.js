@@ -9,12 +9,12 @@ function Scene(width, height, depth) {
         self.children.push(object);
     }
 
-    this.voxelTest = function(position, face) {
+    this.voxelTest = function(position, face, origin, direction) {
         for(var i = 0; i < self.children.length; i++) {
             if(!self.children[i].hasOwnProperty("sprite")) {
-                var between = camera.position.subtract(position);
+                var between = origin.subtract(position);
                 return {
-                    "depth": -1*between.dot(camera.direction),
+                    "depth": -1*between.dot(direction),
                     "isSolid": self.children[i].isSolid(self.children[i].toLocal(position)),
                     "voxel": self.children[i].get(self.children[i].toLocal(position), face)
                 };
@@ -27,15 +27,14 @@ function Scene(width, height, depth) {
         };
     }
 
-    this.spriteTest = function(start, direction, right, up) {
+    this.spriteTest = function(origin, direction, right, up) {
         for(var i = 0; i < self.children.length; i++) {
             if(self.children[i].hasOwnProperty("sprite")) {
-                var between = start.subtract(self.children[i].position);
+                var between = origin.subtract(self.children[i].position);
                 var depth = -1*between.dot(direction);
                 var horizontal = Math.round(between.dot(right));
                 var vertical = Math.round(between.dot(up));
                 // calculate direction from camera angle
-                // TO DO - offset by sprite angle
                 var betweenUnit = between.unit();
                 var a = betweenUnit.x*Math.cos(self.children[i].sprite.angle) + betweenUnit.y*Math.sin(self.children[i].sprite.angle);
                 var b = betweenUnit.y*Math.cos(self.children[i].sprite.angle) - betweenUnit.x*Math.sin(self.children[i].sprite.angle);

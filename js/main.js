@@ -76,8 +76,7 @@ function animate() {
 		rotate--;
 	}
 
-	// TO DO - fix variable speed due to player position rounding
-	var speed = 2;
+	var speed = player.speed;
 	if(up*right != 0) {
 		speed = Math.sqrt(speed);
 	}
