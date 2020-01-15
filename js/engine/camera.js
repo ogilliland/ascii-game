@@ -6,7 +6,7 @@ function OrthographicCamera() {
 	this.position = new Vector();
 	this.direction = new Vector();
 	this.theta = Math.PI/4;
-	this.phi = Math.PI/4;
+	this.phi = 0;
 	this.right = new Vector();
 	this.up = new Vector();
 	var self = this;

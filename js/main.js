@@ -38,12 +38,11 @@ function init() {
 	player = new Character();
 	player.position.x = scene.width/2;
 	player.position.y = scene.height/2;
+	player.position.z = scene.depth;
 	scene.addChild(player);
 
 	camera = new OrthographicCamera();
 	camera.setContext(ctx);
-	// camera.setPos(new Vector(scene.width/2, scene.height/2, scene.depth + 32));
-	// camera.lookAt(new Vector(0, 0, 0));
 
 	camera.follow(player);
 
